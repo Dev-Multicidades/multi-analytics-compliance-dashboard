@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <title>Compliance | Painel de adesão</title>
+    <link rel="stylesheet" href="/style.css?v=33">
+    <script type="module" src="/src/main.js?v=33"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <main class="main-content" id="overview">
+        <header class="page-header">
+          <div>
+            <div class="eyebrow">ANÁLISE DE DADOS</div>
+            <h1 id="page-title">Adesão às políticas de viagem</h1>
+            <p class="page-description">Acompanhe a adesão às políticas de viagem em um só lugar.</p>
+          </div>
+          <div class="header-meta">
+            <span class="status-indicator" id="connection-indicator"></span>
+            <strong id="connection-label">Aguardando consulta</strong>
+          </div>
+        </header>
+
+        <nav class="dashboard-nav" aria-label="Navegação pelas seções do painel">
+          <a href="#summary-heading">Visão geral</a>
+          <a href="#monthly-adherence-heading">Evolução mensal</a>
+          <a href="#product-heading">Produtos</a>
+          <a href="#client-heading">Empresas</a>
+          <a href="#details-heading">Reservas</a>
+        </nav>
+
+        <form class="filter-panel" id="filters" aria-labelledby="filters-heading">
+          <div class="filter-panel-heading">
+            <div>
+              <div class="eyebrow">CONSULTA</div>
+              <h2 id="filters-heading">Filtros do painel</h2>
+            </div>
+            <!-- <p>Defina o cliente e o período para atualizar os indicadores.</p> -->
+          </div>
+          <label class="filter-field client-field">
+            <span>Cliente</span>
+            <input id="client-slug" name="cliente_slug" value="americanas" autocomplete="off" required>
+          </label>
+          <label class="filter-field">
+            <span>Data inicial</span>
+            <input id="start-date" name="data_inicio" type="date" value="2026-01-01" required>
+          </label>
+          <label class="filter-field">
+            <span>Data final</span>
+            <input id="end-date" name="data_fim" type="date" value="2026-03-31" required>
+          </label>
+          <label class="filter-field token-field">
+            <span>Token de acesso <span class="optional-label">(Bearer)</span></span>
+            <input id="api-token" name="api_token" type="password" placeholder="Cole seu token, com ou sem Bearer" autocomplete="off">
+            <small class="filter-hint">Usado apenas nesta consulta; não é salvo.</small>
+          </label>
+          <button class="primary-button" id="apply-filters" type="submit">
+            <span aria-hidden="true">⌕</span>
+            Aplicar filtros
+          </button>
+        </form>
+
+        <!-- <div class="alert" id="page-error" role="alert" hidden></div> -->
+        <div class="loading-bar" id="loading-bar" hidden><span></span></div>
+
+        <section class="section-block" aria-labelledby="summary-heading">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">RESUMO DO PERÍODO</div>
+              <h2 id="summary-heading">Indicadores principais</h2>
+            </div>
+            <span class="updated-label" id="period-label">—</span>
+          </div>
+          <div class="section-loader" id="section-loader-summary" role="status" hidden>
+            <span class="section-loader-spinner" aria-hidden="true"></span>
+            <span class="section-loader-label"></span>
+          </div>
+          <div class="metrics-grid" id="summary-metrics" aria-live="polite">
+            <article class="metric-card"><span class="metric-label">Reservas analisadas</span><strong class="metric-value">—</strong><span class="metric-footnote">No período selecionado</span></article>
+            <article class="metric-card metric-card--adherent"><span class="metric-label">Aderência</span><strong class="metric-value">—</strong><span class="metric-footnote">Reservas aderentes</span></article>
+            <article class="metric-card metric-card--non-adherent"><span class="metric-label">Não aderentes</span><strong class="metric-value">—</strong><span class="metric-footnote">Fora da política</span></article>
+            <article class="metric-card metric-card--indeterminate"><span class="metric-label">Indeterminadas</span><strong class="metric-value">—</strong><span class="metric-footnote">Sem resultado conclusivo</span></article>
+            <article class="metric-card"><span class="metric-label">Cobertura</span><strong class="metric-value">—</strong><span class="metric-footnote">Reservas com análise</span></article>
+          </div>
+        </section>
+
+        <section class="section-block" aria-labelledby="monthly-adherence-heading">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">TENDÊNCIA</div>
+              <h2 id="monthly-adherence-heading">Evolução mensal da adesão</h2>
+            </div>
+            <span class="chart-note">Adesão ponderada pelo total de reservas</span>
+          </div>
+          <div class="section-loader" id="section-loader-monthly" role="status" hidden>
+            <span class="section-loader-spinner" aria-hidden="true"></span>
+            <span class="section-loader-label"></span>
+          </div>
+          <div class="chart-card monthly-adherence-card" id="monthly-adherence-chart" aria-live="polite">
+            <div class="empty-state">Aguardando dados da API…</div>
+          </div>
+        </section>
+
+        <section class="section-block" aria-labelledby="product-heading">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">DESEMPENHO</div>
+              <h2 id="product-heading">Adesão por produto</h2>
+            </div>
+            <div class="legend"><span class="legend-dot adherent"></span>Aderente <span class="legend-dot non-adherent"></span>Não aderente <span class="legend-dot unknown"></span>Indeterminada</div>
+          </div>
+          <div class="section-loader" id="section-loader-product" role="status" hidden>
+            <span class="section-loader-spinner" aria-hidden="true"></span>
+            <span class="section-loader-label"></span>
+          </div>
+          <div class="product-list" id="product-breakdown" aria-live="polite">
+            <div class="empty-state">Aguardando dados da API…</div>
+          </div>
+        </section>
+
+        <section class="section-block" aria-labelledby="client-heading">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">EVOLUÇÃO</div>
+              <h2 id="client-heading">Adesão por Empresa</h2>
+            </div>
+            <span class="chart-note">Percentual de aderência por mês</span>
+          </div>
+          <div class="section-loader" id="section-loader-client" role="status" hidden>
+            <span class="section-loader-spinner" aria-hidden="true"></span>
+            <span class="section-loader-label"></span>
+          </div>
+          <div class="chart-card" id="client-breakdown" aria-live="polite">
+            <div class="empty-state">Aguardando dados da API…</div>
+          </div>
+        </section>
+
+        <section class="section-block" aria-labelledby="details-heading">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">DETALHAMENTO</div>
+              <h2 id="details-heading">Reservas para acompanhamento</h2>
+            </div>
+          </div>
+          <div class="section-loader" id="section-loader-details" role="status" hidden>
+            <span class="section-loader-spinner" aria-hidden="true"></span>
+            <span class="section-loader-label"></span>
+          </div>
+          <div class="detail-grid">
+            <article class="detail-card">
+              <div class="detail-card-heading">
+                <div><span class="detail-icon">P</span><h3>Passageiros</h3></div>
+                <div class="detail-card-actions">
+                  <button class="csv-export-button" id="export-passengers" type="button" aria-label="Exportar passageiros para CSV" title="Exportar CSV" disabled>
+                    <svg aria-hidden="true" viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M10 2.75v9m0 0 3.25-3.25M10 11.75 6.75 8.5M3.5 12.75v3a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <span class="count-badge" id="passenger-count">—</span>
+                </div>
+              </div>
+              <label class="indicator-search">
+                <span class="sr-only">Buscar passageiro</span>
+                <input id="passenger-search" type="search" placeholder="Buscar passageiro..." autocomplete="off">
+              </label>
+              <div class="table-wrap" id="passenger-table"><div class="empty-state">Aguardando dados da API…</div></div>
+            </article>
+            <article class="detail-card">
+              <div class="detail-card-heading">
+                <div><span class="detail-icon">A</span><h3>Autorizadores</h3></div>
+                <div class="detail-card-actions">
+                  <button class="csv-export-button" id="export-approvers" type="button" aria-label="Exportar autorizadores para CSV" title="Exportar CSV" disabled>
+                    <svg aria-hidden="true" viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M10 2.75v9m0 0 3.25-3.25M10 11.75 6.75 8.5M3.5 12.75v3a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <span class="count-badge" id="approver-count">—</span>
+                </div>
+              </div>
+              <label class="indicator-search">
+                <span class="sr-only">Buscar autorizador</span>
+                <input id="approver-search" type="search" placeholder="Buscar autorizador..." autocomplete="off">
+              </label>
+              <div class="table-wrap" id="approver-table"><div class="empty-state">Aguardando dados da API…</div></div>
+            </article>
+            <article class="detail-card cost-center-card">
+              <div class="detail-card-heading">
+                <div><span class="detail-icon">CC</span><h3>Centros de custo</h3></div>
+                <div class="detail-card-actions">
+                  <button class="csv-export-button" id="export-cost-centers" type="button" aria-label="Exportar centros de custo para CSV" title="Exportar CSV" disabled>
+                    <svg aria-hidden="true" viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M10 2.75v9m0 0 3.25-3.25M10 11.75 6.75 8.5M3.5 12.75v3a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <span class="count-badge" id="cost-center-count">—</span>
+                </div>
+              </div>
+              <label class="indicator-search">
+                <span class="sr-only">Buscar centro de custo</span>
+                <input id="cost-center-search" type="search" placeholder="Buscar centro de custo..." autocomplete="off">
+              </label>
+              <div class="table-wrap" id="cost-center-table"><div class="empty-state">Aguardando dados da API…</div></div>
+            </article>
+            <article class="detail-card reservation-list-card">
+              <div class="detail-card-heading">
+                <div><span class="detail-icon">R</span><h3>Reservas</h3></div>
+                <span class="count-badge" id="reservation-count">—</span>
+              </div>
+              <label class="indicator-search">
+                <span class="sr-only">Buscar reserva</span>
+                <input id="reservation-search" type="search" placeholder="Buscar reserva..." autocomplete="off">
+              </label>
+              <div class="reservation-filters" role="group" aria-label="Filtrar reservas por resultado">
+                <button class="reservation-filter reservation-filter--pass" type="button" data-result-filter="PASS" aria-pressed="false">Aderente</button>
+                <button class="reservation-filter reservation-filter--fail" type="button" data-result-filter="FAIL" aria-pressed="false">Não Aderente</button>
+                <button class="reservation-filter reservation-filter--indeterminate" type="button" data-result-filter="INDETERMINATE" aria-pressed="false">Indeterminada</button>
+              </div>
+              <div class="table-wrap" id="reservation-table"><div class="empty-state">Aguardando dados da API…</div></div>
+            </article>
+          </div>
+        </section>
+        <!-- <footer class="page-footer">Painel alimentado pelos endpoints de compliance.</footer> -->
+      </main>
+      <dialog class="reservation-detail-dialog" id="reservation-detail-dialog" aria-labelledby="rule-reservation-heading">
+        <div class="reservation-detail-modal">
+          <header class="reservation-detail-modal-heading">
+            <div class="reservation-detail-modal-title">
+              <div class="eyebrow">DETALHAMENTO</div>
+              <h2 id="rule-reservation-heading">Regras da reserva</h2>
+              <div class="rule-reservation-identity">
+                <div class="rule-reservation-identity-item">
+                  <span class="rule-summary-label">Número da reserva</span>
+                  <strong id="rule-reservation-number">—</strong>
+                </div>
+                <div class="rule-reservation-identity-item rule-reservation-client">
+                  <span class="rule-summary-label">Cliente</span>
+                  <strong id="rule-reservation-client">—</strong>
+                </div>
+                <div class="rule-overall-result" id="rule-reservation-result" aria-live="polite">
+                  <span class="rule-summary-label">Resultado geral</span>
+                  <strong id="rule-reservation-result-label">—</strong>
+                </div>
+              </div>
+            </div>
+            <button class="reservation-detail-close" id="rule-reservation-back" type="button" aria-label="Fechar detalhes">×</button>
+          </header>
+          <div class="alert" id="rule-reservation-error" role="alert" hidden></div>
+          <div class="section-loader" id="rule-reservation-loader" role="status" hidden>
+            <span class="section-loader-spinner" aria-hidden="true"></span>
+            <span class="section-loader-label">Carregando regras da reserva…</span>
+          </div>
+          <section class="section-block" aria-labelledby="rule-reservation-data-heading">
+            <div class="section-heading">
+              <div>
+                <div class="eyebrow">COMPLIANCE</div>
+                <h2 id="rule-reservation-data-heading">Dados de compliance</h2>
+              </div>
+            </div>
+            <div class="rule-reservation-data" id="rule-reservation-data" aria-live="polite">
+              <div class="empty-state">Aguardando dados da API…</div>
+            </div>
+          </section>
+        </div>
+      </dialog>
+    </div>
+  </body>
+</html>
