@@ -372,22 +372,117 @@ h2 {
   box-shadow: 0 5px 16px rgb(34 54 88 / 4%);
 }
 
+.metric-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.metric-info-button {
+  width: 22px;
+  height: 22px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 22px;
+  padding: 0;
+  color: #788397;
+  background: #fff;
+  border: 1px solid #dce2eb;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metric-info-button:hover {
+  color: var(--purple);
+  border-color: var(--purple);
+}
+
+.metric-info-button:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+
+.metric-info {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 12px;
+  z-index: 2;
+  width: min(260px, calc(100vw - 48px));
+  margin: 0;
+  padding: 8px 10px;
+  color: #465166;
+  background: #fff;
+  border: 1px solid var(--metric-info-border-color);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(34 54 88 / 16%);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.metric-info[hidden] {
+  display: none;
+}
+
+.metric-info-icon {
+  flex: 0 0 18px;
+  color: var(--metric-info-border-color);
+  line-height: 0;
+}
+
+.metric-info-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.metric-info::before {
+  position: absolute;
+  bottom: -6px;
+  right: 15px;
+  width: 10px;
+  height: 10px;
+  content: "";
+  background: #fff;
+  border-right: 1px solid var(--metric-info-border-color);
+  border-bottom: 1px solid var(--metric-info-border-color);
+  transform: rotate(45deg);
+}
+
+.metric-card--info-open {
+  z-index: 2;
+}
+
 .metric-card--adherent, .metric-card--non-adherent, .metric-card--indeterminate {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .metric-card--adherent {
+  --metric-info-border-color: var(--green);
   background: linear-gradient(135deg, #fff 20%, #f4fbf7);
   border-color: #dcefe6;
 }
 
 .metric-card--non-adherent {
+  --metric-info-border-color: var(--red);
   background: linear-gradient(135deg, #fff 20%, #fff6f6);
   border-color: #f2e2e3;
 }
 
 .metric-card--indeterminate {
+  --metric-info-border-color: var(--amber);
   background: linear-gradient(135deg, #fff 20%, #fffbf2);
   border-color: #f1e9d8;
 }
@@ -919,6 +1014,7 @@ h2 {
 
 .reservation-detail-modal {
   max-height: calc(100vh - 32px);
+  margin-right: 8px;
   overflow-y: auto;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
@@ -970,6 +1066,55 @@ h2 {
   color: #172338;
   font-size: clamp(25px, 2.2vw, 30px);
   letter-spacing: -.8px;
+}
+
+.compliance-evaluation-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  color: #40506a;
+  background: #f5f8ff;
+  border: 1px solid var(--accent-border);
+  border-left: 4px solid var(--purple);
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.compliance-evaluation-note-icon {
+  flex: 0 0 18px;
+  margin-top: 1px;
+  color: var(--purple);
+  line-height: 0;
+}
+
+.compliance-evaluation-note-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.compliance-evaluation-note-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.compliance-evaluation-note p {
+  margin: 0;
+}
+
+.compliance-evaluation-note p + p {
+  margin-top: 8px;
+}
+
+.compliance-evaluation-note strong {
+  color: #273958;
 }
 
 .rule-reservation-identity {

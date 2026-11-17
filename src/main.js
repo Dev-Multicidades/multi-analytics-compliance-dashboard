@@ -1,3 +1,3 @@
-import { initializeDashboard } from "./app/dashboard.js?v=33";
+import { initializeDashboard } from "./app/dashboard.js?v=35";
 
 initializeDashboard();

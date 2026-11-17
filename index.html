@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f7fb">
     <title>Compliance | Painel de adesão</title>
-    <link rel="stylesheet" href="/style.css?v=33">
-    <script type="module" src="/src/main.js?v=33"></script>
+    <link rel="stylesheet" href="/style.css?v=43">
+    <script type="module" src="/src/main.js?v=35"></script>
   </head>
   <body>
     <div class="app-shell">
@@ -79,9 +79,42 @@
           </div>
           <div class="metrics-grid" id="summary-metrics" aria-live="polite">
             <article class="metric-card"><span class="metric-label">Reservas analisadas</span><strong class="metric-value">—</strong><span class="metric-footnote">No período selecionado</span></article>
-            <article class="metric-card metric-card--adherent"><span class="metric-label">Aderência</span><strong class="metric-value">—</strong><span class="metric-footnote">Reservas aderentes</span></article>
-            <article class="metric-card metric-card--non-adherent"><span class="metric-label">Não aderentes</span><strong class="metric-value">—</strong><span class="metric-footnote">Fora da política</span></article>
-            <article class="metric-card metric-card--indeterminate"><span class="metric-label">Indeterminadas</span><strong class="metric-value">—</strong><span class="metric-footnote">Sem resultado conclusivo</span></article>
+            <article class="metric-card metric-card--adherent">
+              <div class="metric-label-row">
+                <span class="metric-label">Aderência</span>
+                <button class="metric-info-button" type="button" aria-label="Informações sobre aderência" aria-expanded="false" aria-controls="adherent-info"><span aria-hidden="true">i</span></button>
+              </div>
+              <p class="metric-info" id="adherent-info" hidden>
+                <span class="metric-info-icon" aria-hidden="true"><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="7.25"></circle><path d="m5.8 9 2.1 2.1 4.4-4.4"></path></svg></span>
+                <span>As regras de compliance aplicáveis foram atendidas.</span>
+              </p>
+              <strong class="metric-value">—</strong>
+              <span class="metric-footnote">Reservas aderentes</span>
+            </article>
+            <article class="metric-card metric-card--non-adherent">
+              <div class="metric-label-row">
+                <span class="metric-label">Não aderentes</span>
+                <button class="metric-info-button" type="button" aria-label="Informações sobre não aderentes" aria-expanded="false" aria-controls="non-adherent-info"><span aria-hidden="true">i</span></button>
+              </div>
+              <p class="metric-info" id="non-adherent-info" hidden>
+                <span class="metric-info-icon" aria-hidden="true"><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="7.25"></circle><path d="M9 5.2v4.2m0 2.8h.01"></path></svg></span>
+                <span>Ao menos uma regra de compliance aplicável não foi atendida.</span>
+              </p>
+              <strong class="metric-value">—</strong>
+              <span class="metric-footnote">Fora da política</span>
+            </article>
+            <article class="metric-card metric-card--indeterminate">
+              <div class="metric-label-row">
+                <span class="metric-label">Indeterminadas</span>
+                <button class="metric-info-button" type="button" aria-label="Informações sobre indeterminadas" aria-expanded="false" aria-controls="indeterminate-info"><span aria-hidden="true">i</span></button>
+              </div>
+              <p class="metric-info" id="indeterminate-info" hidden>
+                <span class="metric-info-icon" aria-hidden="true"><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="7.25"></circle><path d="M6.5 6.8a2.6 2.6 0 1 1 4.5 1.8c-1.1 1.1-2 1.4-2 3m0 2.3h.01"></path></svg></span>
+                <span>Não há informação suficiente para concluir a aderência. Não equivale a FAIL/não aderente.</span>
+              </p>
+              <strong class="metric-value">—</strong>
+              <span class="metric-footnote">Sem resultado conclusivo</span>
+            </article>
             <article class="metric-card"><span class="metric-label">Cobertura</span><strong class="metric-value">—</strong><span class="metric-footnote">Reservas com análise</span></article>
           </div>
         </section>
@@ -240,6 +273,16 @@
             </div>
             <button class="reservation-detail-close" id="rule-reservation-back" type="button" aria-label="Fechar detalhes">×</button>
           </header>
+          <aside class="compliance-evaluation-note" role="note" aria-label="Informação sobre as regras de avaliação de compliance">
+            <span class="compliance-evaluation-note-icon" aria-hidden="true">
+              <svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="7.25"></circle><path d="M9 8v4m0-6h.01"></path></svg>
+            </span>
+            <div class="compliance-evaluation-note-content">
+              <p>Para as regras de compliance, a consolidação segue esta prioridade:</p>
+              <p><strong>Não aderente</strong> tem precedência; na ausência de <strong>Não aderente</strong>, <strong>Indeterminada</strong> tem precedência; na ausência de ambos, a consolidação resulta em <strong>Aderente</strong>.</p>
+              <p>Sem uma regra de compliance avaliada, a classificação é <strong>Indeterminada</strong>. Essa ordem impede que uma regra <strong>Aderente</strong> compense uma regra <strong>Não aderente</strong> ou uma ausência relevante de dados em outra regra.</p>
+            </div>
+          </aside>
           <div class="alert" id="rule-reservation-error" role="alert" hidden></div>
           <div class="section-loader" id="rule-reservation-loader" role="status" hidden>
             <span class="section-loader-spinner" aria-hidden="true"></span>

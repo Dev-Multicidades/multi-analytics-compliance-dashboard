@@ -205,6 +205,21 @@ export function initializeDashboard() {
   }
 
   $("#filters").addEventListener("submit", refreshDashboard);
+  $("#summary-metrics").addEventListener("click", (event) => {
+    const infoButton = event.target.closest(".metric-info-button");
+    if (!infoButton) return;
+
+    const info = document.getElementById(infoButton.getAttribute("aria-controls"));
+    const expanded = infoButton.getAttribute("aria-expanded") !== "true";
+    $("#summary-metrics").querySelectorAll(".metric-info-button").forEach((button) => {
+      button.setAttribute("aria-expanded", "false");
+      document.getElementById(button.getAttribute("aria-controls")).hidden = true;
+      button.closest(".metric-card").classList.remove("metric-card--info-open");
+    });
+    infoButton.setAttribute("aria-expanded", String(expanded));
+    info.hidden = !expanded;
+    infoButton.closest(".metric-card").classList.toggle("metric-card--info-open", expanded);
+  });
   $("#reservation-table").addEventListener("click", (event) => {
     const link = event.target.closest("[data-reservation-detail]");
     if (!link) return;
