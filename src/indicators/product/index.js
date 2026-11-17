@@ -1,4 +1,4 @@
-import { $, element, emptyState } from "../../shared/dom.js";
+import { $, apiUnavailableState, element } from "../../shared/dom.js?v=2";
 import { formatMonth, formatNumber, formatPercent, productLabel } from "../../shared/format.js?v=20";
 
 function monthTotal(month) {
@@ -39,7 +39,7 @@ export function renderProduct(productData) {
   container.replaceChildren();
   const months = productData?.periodo || [];
   if (!months.length) {
-    container.append(emptyState("Nenhum dado de produto encontrado para este período."));
+    container.append(apiUnavailableState());
     return;
   }
 
@@ -101,7 +101,3 @@ export function renderProduct(productData) {
   });
 }
 
-export function renderProductError(message) {
-  const container = $("#product-breakdown");
-  container.replaceChildren(emptyState(message));
-}

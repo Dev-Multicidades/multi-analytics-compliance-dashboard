@@ -330,9 +330,15 @@ h2 {
 }
 
 .section-loader--error {
-  color: #b84d55;
-  background: #fff8f8;
-  border-color: #f2dfe0;
+  min-height: 0;
+  justify-content: center;
+  padding: 8px;
+  background: #fff;
+}
+
+.section-loader--error .section-loader-label {
+  display: block;
+  width: 100%;
 }
 
 .section-loader-spinner {
@@ -347,6 +353,27 @@ h2 {
 
 .section-loader--error .section-loader-spinner {
   display: none;
+}
+
+.api-data-hidden {
+  display: none !important;
+}
+
+.api-unavailable-state {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+.api-unavailable-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100%, 560px);
+  max-height: 330px;
+  object-fit: contain;
 }
 
 @keyframes section-loader-spin {
@@ -901,6 +928,56 @@ h2 {
 .monthly-point-value {
   fill: #657187;
   font: 700 var(--font-data) "Segoe UI", Arial, sans-serif;
+}
+
+.rule-failures-card {
+  min-height: 0;
+}
+
+.rule-failures-chart {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.rule-failures-svg {
+  display: block;
+  max-width: none;
+}
+
+.rule-failures-gridline {
+  stroke: #e9edf4;
+  stroke-width: 1;
+}
+
+.rule-failures-axis-label {
+  fill: #8a94a5;
+  font: 500 var(--font-caption) "Segoe UI", Arial, sans-serif;
+}
+
+.rule-failures-month-label {
+  fill: #303b4f;
+  font: 700 var(--font-data) "Segoe UI", Arial, sans-serif;
+}
+
+.rule-failures-series-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.rule-failures-point {
+  fill: #fff;
+  stroke-width: 2.5;
+}
+
+.rule-failures-value-label {
+  fill: #40506a;
+  font: 700 var(--font-caption) "Segoe UI", Arial, sans-serif;
+}
+
+.rule-failures-series-label {
+  font: 700 var(--font-caption) "Segoe UI", Arial, sans-serif;
 }
 
 .detail-grid {

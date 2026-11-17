@@ -1,5 +1,5 @@
 import { loadReservationRules } from "../api/compliance.js?v=26";
-import { $, element, emptyState } from "../shared/dom.js";
+import { $, apiUnavailableState, element } from "../shared/dom.js?v=2";
 import { resultBadge } from "../shared/table.js";
 
 let activeRequest;
@@ -116,7 +116,7 @@ function renderRules(data, numeroReserva) {
     }));
   const ruleList = element("div", "rule-reservation-list");
   if (sortedRules.length) sortedRules.forEach((rule) => ruleList.append(renderRule(rule || {})));
-  else ruleList.append(emptyState("Nenhuma regra encontrada para esta reserva."));
+  else ruleList.append(apiUnavailableState());
 
   container.replaceChildren(summary, ruleList);
 }
@@ -142,9 +142,7 @@ export async function renderReservationRules({ numeroReserva, filters }) {
     if (error.name === "AbortError") return;
     $("#rule-reservation-error").textContent = `Não foi possível carregar as regras desta reserva: ${error.message}`;
     $("#rule-reservation-error").hidden = false;
-    $("#rule-reservation-data").replaceChildren(
-      emptyState("A API não retornou as regras desta reserva."),
-    );
+    $("#rule-reservation-data").replaceChildren(apiUnavailableState());
   } finally {
     if (activeRequest === controller) {
       $("#rule-reservation-loader").hidden = true;

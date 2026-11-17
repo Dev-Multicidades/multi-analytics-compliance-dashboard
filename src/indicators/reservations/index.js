@@ -1,4 +1,4 @@
-import { $, element } from "../../shared/dom.js";
+import { $, apiUnavailableState, element, emptyState } from "../../shared/dom.js?v=2";
 import { flattenReservations } from "../../shared/results.js";
 import { createTable, resultBadge } from "../../shared/table.js";
 
@@ -68,16 +68,16 @@ function renderReservationTable() {
   ]);
 
   $("#reservation-count").textContent = String(reservations.length);
-  $("#reservation-table").replaceChildren(createTable(
-    HEADERS,
-    rows,
-    "Nenhuma reserva encontrada para este período.",
-    {
-      sortable: true,
-      sortValues,
-      searchInput: "#reservation-search",
-    },
-  ));
+  const content = currentReservations.length === 0
+    ? apiUnavailableState()
+    : reservations.length === 0
+      ? emptyState("Nenhuma reserva corresponde ao filtro selecionado.")
+      : createTable(HEADERS, rows, "Nenhuma reserva encontrada para este período.", {
+        sortable: true,
+        sortValues,
+        searchInput: "#reservation-search",
+      });
+  $("#reservation-table").replaceChildren(content);
 }
 
 function bindResultFilters() {

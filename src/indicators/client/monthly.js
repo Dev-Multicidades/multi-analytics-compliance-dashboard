@@ -1,4 +1,4 @@
-import { $, element, emptyState } from "../../shared/dom.js";
+import { $, apiUnavailableState, element } from "../../shared/dom.js?v=2";
 import { formatMonth, formatNumber, formatPercent } from "../../shared/format.js?v=20";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -42,7 +42,7 @@ export function renderMonthlyAdherence(clientData) {
     .map(monthlyAdherence)
     .filter((point) => point !== null);
   if (!points.length) {
-    container.append(emptyState("Não há totais de reservas válidos por cliente para calcular a adesão mensal."));
+    container.append(apiUnavailableState());
     return;
   }
 

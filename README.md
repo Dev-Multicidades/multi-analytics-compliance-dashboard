@@ -35,6 +35,7 @@ A URL base da API está configurada como `http://127.0.0.1:8000` em `server.py`.
 - `/compliance/adesao-passageiro`
 - `/compliance/adesao-autorizador`
 - `/compliance/adesao-centro-de-custo`
+- `/compliance/lista-rules-reserva`
 - `/compliance/rule-reserva`
 
 As consultas dos indicadores recebem `cliente_slug`, `data_inicio` e `data_fim`. A visualização de detalhes envia somente `cliente_slug` e `numero_reserva` para `/compliance/rule-reserva`, usando o token do dashboard no header `Authorization`.
@@ -44,6 +45,8 @@ Os indicadores de passageiros, autorizadores e centros de custo podem ser filtra
 O indicador **Reservas** lista cada reserva retornada por `/compliance/adesao-passageiro`, com busca e filtros por resultado (aderente, não aderente ou indeterminada). O ícone de detalhes abre um modal no dashboard com os dados de `/compliance/rule-reserva`.
 
 O indicador **Evolução mensal da adesão** usa `/compliance/adesao-cliente` e calcula o percentual mensal ponderando a aderência de cada cliente pelo campo `total` de reservas: soma de (`total` × aderência) dividida pela soma de `total`. Meses sem totais válidos não são plotados.
+
+O indicador **Motivos de não aderência** está temporariamente oculto no painel. Quando ativo, usa `/compliance/lista-rules-reserva` com os filtros atuais de cliente e período e exibe uma linha por `rule_type`, com o nome do motivo identificado diretamente ao lado da linha, contando por mês as reservas cujo resultado geral e resultado da regra são `FAIL`; a data de emissão (`dtemissao`) define o mês. Uma reserva com mais de um tipo de regra reprovado é contada uma vez em cada tipo.
 
 O indicador **Adesão por Empresa** mantém juntos os meses com até duas empresas. Meses com mais de duas empresas recebem uma página própria, com controles de navegação quando necessário.
 
@@ -56,6 +59,7 @@ src/
   indicators/
     client/               # Adesão por cliente
     product/              # Adesão por produto
+    rule-failures/         # Reservas não aderentes agrupadas por tipo de regra
     summary/              # Indicadores gerais do período
     passengers/           # Resumo por passageiro
     approvers/             # Resumo por autorizador

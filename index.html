@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f7fb">
     <title>Compliance | Painel de adesão</title>
-    <link rel="stylesheet" href="/style.css?v=44">
-    <script type="module" src="/src/main.js?v=35"></script>
+    <link rel="stylesheet" href="/style.css?v=48">
+    <script type="module" src="/src/main.js?v=44"></script>
   </head>
   <body>
     <div class="app-shell">
@@ -77,6 +77,7 @@
             <span class="section-loader-spinner" aria-hidden="true"></span>
             <span class="section-loader-label"></span>
           </div>
+          <div id="summary-api-empty-state" hidden></div>
           <div class="metrics-grid" id="summary-metrics" aria-live="polite">
             <article class="metric-card"><span class="metric-label">Reservas analisadas</span><strong class="metric-value">—</strong><span class="metric-footnote">No período selecionado</span></article>
             <article class="metric-card metric-card--adherent">
@@ -132,6 +133,23 @@
             <span class="section-loader-label"></span>
           </div>
           <div class="chart-card monthly-adherence-card" id="monthly-adherence-chart" aria-live="polite">
+            <div class="empty-state">Aguardando dados da API…</div>
+          </div>
+        </section>
+
+        <section class="section-block" aria-labelledby="rule-failures-heading" hidden>
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">REGRAS DE COMPLIANCE</div>
+              <h2 id="rule-failures-heading">Motivos de não aderência</h2>
+            </div>
+            <span class="chart-note">Contagem mensal de reservas por tipo de regra que falhou</span>
+          </div>
+          <div class="section-loader" id="section-loader-rule-failures" role="status" hidden>
+            <span class="section-loader-spinner" aria-hidden="true"></span>
+            <span class="section-loader-label"></span>
+          </div>
+          <div class="chart-card rule-failures-card" id="rule-failure-breakdown" aria-live="polite">
             <div class="empty-state">Aguardando dados da API…</div>
           </div>
         </section>

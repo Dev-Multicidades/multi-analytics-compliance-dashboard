@@ -1,4 +1,4 @@
-import { $, element, emptyState } from "../../shared/dom.js";
+import { $, apiUnavailableState, element } from "../../shared/dom.js?v=2";
 import { formatMonth, formatNumber, formatPercent } from "../../shared/format.js?v=20";
 const MAX_CLIENTS_WITHOUT_PAGINATION = 2;
 
@@ -39,7 +39,7 @@ export function renderClient(clientData) {
   container.replaceChildren();
   const months = clientData?.periodo || [];
   if (!months.length) {
-    container.append(emptyState("Nenhum dado de cliente encontrado para este período."));
+    container.append(apiUnavailableState());
     return;
   }
 

@@ -1,4 +1,4 @@
-import { $, element } from "../../shared/dom.js";
+import { $, apiUnavailableState, element } from "../../shared/dom.js?v=2";
 import { formatDisplayName, formatNumber, formatPercent } from "../../shared/format.js?v=20";
 import { aggregateResults, flattenReservations } from "../../shared/results.js";
 import { createTable } from "../../shared/table.js";
@@ -37,17 +37,14 @@ export function renderCostCenters(data) {
   ];
 
   $("#cost-center-count").textContent = formatNumber(groups.length);
-  $("#cost-center-table").replaceChildren(createTable(
-    headers,
-    rows,
-    "Nenhum centro de custo encontrado para este período.",
-    {
+  $("#cost-center-table").replaceChildren(groups.length
+    ? createTable(headers, rows, "Nenhum centro de custo encontrado para este período.", {
       sortable: true,
       sortValues,
       searchInput: "#cost-center-search",
       searchColumns: [0],
-    },
-  ));
+    })
+    : apiUnavailableState());
 
   return {
     headers: ["Centro de custo", "Cliente", "Produto", "Categoria", "Aderente", "Não aderente", "Indeterminado", "% aderência"],

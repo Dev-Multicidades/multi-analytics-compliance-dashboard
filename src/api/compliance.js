@@ -1,4 +1,4 @@
-import { ENDPOINTS } from "./endpoints.js?v=22";
+import { ENDPOINTS } from "./endpoints.js?v=24";
 
 async function get(path, filters, signal, token) {
   const url = new URL(path, window.location.origin);

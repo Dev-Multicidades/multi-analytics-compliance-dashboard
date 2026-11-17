@@ -1,4 +1,4 @@
-import { $, element } from "./dom.js";
+import { $, apiUnavailableState, element } from "./dom.js?v=2";
 import {
   formatDisplayName,
   formatNumber,
@@ -39,12 +39,14 @@ export function renderSummaryTable({
   ]);
 
   $(count).textContent = formatNumber(groups.length);
-  $(container).replaceChildren(createTable(headers, rows, emptyMessage, {
-    sortable: true,
-    sortValues,
-    searchInput,
-    searchColumns: [0],
-  }));
+  $(container).replaceChildren(groups.length
+    ? createTable(headers, rows, emptyMessage, {
+      sortable: true,
+      sortValues,
+      searchInput,
+      searchColumns: [0],
+    })
+    : apiUnavailableState());
 
   return {
     headers: [entityLabel, "Aderente", "Não aderente", "Indeterminado", "% aderência"],

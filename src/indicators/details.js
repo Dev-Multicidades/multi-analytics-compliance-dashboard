@@ -1,7 +1,7 @@
-import { renderApprovers } from "./approvers/index.js?v=20";
-import { renderCostCenters } from "./cost-centers/index.js?v=20";
-import { renderPassengers } from "./passengers/index.js?v=20";
-import { renderReservations } from "./reservations/index.js?v=30";
+import { renderApprovers } from "./approvers/index.js?v=22";
+import { renderCostCenters } from "./cost-centers/index.js?v=22";
+import { renderPassengers } from "./passengers/index.js?v=22";
+import { renderReservations } from "./reservations/index.js?v=32";
 
 export function renderDetails(data) {
   return {

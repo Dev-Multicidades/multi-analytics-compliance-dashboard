@@ -1,16 +1,23 @@
-import { loadComplianceDashboard } from "../api/compliance.js?v=23";
-import { $ } from "../shared/dom.js";
+import { loadComplianceDashboard } from "../api/compliance.js?v=25";
+import { $, apiUnavailableState } from "../shared/dom.js?v=2";
 import { clearCsvExports, downloadCsv, setCsvExport } from "../shared/csv.js";
-import { renderDetails } from "../indicators/details.js?v=30";
-import { hideReservationRules, renderReservationRules } from "./reservation-rules.js?v=33";
-import { renderClient } from "../indicators/client/index.js?v=20";
-import { renderMonthlyAdherence } from "../indicators/client/monthly.js?v=20";
-import { renderProduct, renderProductError } from "../indicators/product/index.js?v=20";
-import { renderSummary } from "../indicators/summary/index.js?v=20";
+import { renderDetails } from "../indicators/details.js?v=32";
+import { hideReservationRules, renderReservationRules } from "./reservation-rules.js?v=35";
+import { renderClient } from "../indicators/client/index.js?v=22";
+import { renderMonthlyAdherence } from "../indicators/client/monthly.js?v=22";
+import { renderProduct } from "../indicators/product/index.js?v=22";
+import { renderSummary } from "../indicators/summary/index.js?v=22";
 
 let activeRequest;
 
 const CLIENT_ABBREVIATIONS = new Set(["abpf", "agis", "chep"]);
+const SECTION_CONTENT_SELECTORS = {
+  summary: ["#summary-metrics", "#summary-api-empty-state"],
+  monthly: ["#monthly-adherence-chart"],
+  product: ["#product-breakdown"],
+  client: ["#client-breakdown"],
+  details: [".detail-grid"],
+};
 
 function formatClientName(slug) {
   return slug
@@ -25,10 +32,17 @@ function formatClientName(slug) {
 
 function updateSectionLoader(section, state, message) {
   const loader = $(`#section-loader-${section}`);
+  const failed = state === "error";
+  const label = loader.querySelector(".section-loader-label");
   loader.hidden = state === "idle";
-  loader.classList.toggle("section-loader--error", state === "error");
+  loader.classList.toggle("section-loader--error", failed);
   loader.querySelector(".section-loader-spinner").hidden = state !== "loading";
-  loader.querySelector(".section-loader-label").textContent = message;
+  if (failed) label.replaceChildren(apiUnavailableState());
+  else label.textContent = message;
+  (SECTION_CONTENT_SELECTORS[section] || []).forEach((selector) => {
+    if (failed) $(selector).classList.add("api-data-hidden");
+    else if (state === "loading") $(selector).classList.remove("api-data-hidden");
+  });
 }
 
 function updateConnection(connected, message) {
@@ -145,12 +159,6 @@ async function refreshDashboard(event) {
       }
     });
 
-    if (productFailure) {
-      const authHint = productFailure.includes("HTTP 401")
-        ? " Verifique se o token Bearer foi informado e está válido."
-        : "";
-      renderProductError(`Não foi possível carregar o indicador. ${productFailure}.${authHint}`);
-    }
     if (failures.length) {
       const authHint = failures.some((failure) => failure.includes("HTTP 401"))
         ? " Confira se o token Bearer está preenchido e válido."

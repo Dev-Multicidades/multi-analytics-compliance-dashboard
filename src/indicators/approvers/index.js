@@ -1,5 +1,5 @@
 import { aggregateResults, flattenReservations } from "../../shared/results.js";
-import { renderSummaryTable } from "../../shared/summary-table.js?v=20";
+import { renderSummaryTable } from "../../shared/summary-table.js?v=22";
 
 export function renderApprovers(data) {
   const records = flattenReservations(data, "autorizador");

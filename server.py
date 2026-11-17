@@ -47,6 +47,7 @@ API_PATHS = {
     "/compliance/adesao-passageiro",
     "/compliance/adesao-autorizador",
     "/compliance/adesao-centro-de-custo",
+    "/compliance/lista-rules-reserva",
     "/compliance/rule-reserva",
 }
 
