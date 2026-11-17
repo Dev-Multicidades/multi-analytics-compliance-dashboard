@@ -1080,6 +1080,7 @@ h2 {
   border-left: 4px solid var(--purple);
   border-radius: 10px;
   font-size: 13px;
+  font-style: italic;
   line-height: 1.55;
 }
 
